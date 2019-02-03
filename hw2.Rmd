@@ -1,0 +1,108 @@
+---
+title: 'Homework #2'
+author: "Grant Ruedy; GrantRuedy"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## R commands
+1. Today's temperature has a high of 15 and a low of -10 degree fahrenheit.  Find the corresponding degress in celsius and storage it in a (single) vector named `cel`. Print the variable.
+```{r}
+temps <- c(15,-10)
+cel <-((temps)-32)*(5/9)
+cel
+```
+
+
+2. Create a vector of length 200. The odd entries should be 1 and even entries should be 0. Storage the created in a variable named `vec200` and print.
+```{r}
+vec200 <- rep(c(1,0),100)
+vec200
+```
+
+
+3. How many perfect squares are there between 1 and 1001? Storage the answer in a  variable named `numPerfect` and print. You may want to look at `?round`.
+```{r}
+numPerfect <-floor(sqrt(1001)) - ceiling(sqrt(1)) + 1
+numPerfect
+```
+
+
+## Cars and mileage
+
+
+1. What are the 3 most fuel-efficient models in terms of highway mileage? Storage the data frame (with 3 rows) containing all information of these three cars in a variable named `top3` and print.
+```{r}
+library(ggplot2)
+
+newdata <- mpg[order(-mpg$hwy),]
+top3 <- head(newdata,3)
+top3
+```
+The top 3 most fuel efficient models for highway mileage are the Volkswagen jetta,   
+new beetle, and new beetle again. The data is sorted by the 'hwy' column in    
+descending order, then the top 3 are sown using the head function.  
+
+
+2. How many different compact models are included in this dataset? Storage the answer in  a variable named `numCompact` and print.
+```{r}
+mpg_compact <- mpg[mpg$class== 'compact',]
+numCompact <-length(unique(mpg_compact$model))
+numCompact
+```
+There are 8 different compact models in this data set. The data is sorted to where   
+the class is equal to 'compact' then the length of that data using the unique   
+feature for the 'model' variable is stored and printed.
+
+
+3. Create a scatterplot of `hwy` and `cty` and describe the relationship. Why are there so few points visible?
+```{r}
+library(ggplot2)
+plot(mpg$hwy, mpg$cty, xlab='HWY',ylab='CTY',main='Hwy vs Cty Fuel Efficiency')
+```
+
+To plot 'hwy' and 'cty' against each other, the plot function is used and the   
+correct columns from the data set is specified. There appears to be a moderately   
+strong, positive linear relationship between mileage on the highway and in the city.   
+So few points are visible because a lot of them overlap since the cars have the same
+mileage for hwy and cty.
+
+
+4. Are cars in 2008 more fuel efficient than cars in 1999? Use graphs *and* summary statistics to answer this question. 
+```{r}
+dat2008 <- mpg[mpg$year== 2008,]
+dat1999 <- mpg[mpg$year== 1999,]
+
+hwy2008 <- dat2008$hwy
+cty2008 <- dat2008$cty
+
+hwy1999 <- dat1999$hwy
+cty1999 <- dat1999$cty
+
+summary(hwy1999)
+summary(cty1999)
+summary(hwy2008)
+summary(cty2008)
+
+boxplot(hwy1999, hwy2008, xlab='1999 and 2008',ylab='MPG',main='Highway Fuel Efficiency 1999 vs 2008')
+boxplot(cty1999, cty2008, xlab='1999 and 2008',ylab='MPG',main='City Fuel Efficiency 1999 vs 2008')
+```
+
+To find out if 2008 cars were more fuel efficient than 1999 cars, I first subsetted   
+the data to where the year was equal to 1999 or 2008. Then for each year, I sorted it   
+to just the 'cty' and 'hwy' column, which measures the mileage on the highway or in   
+the city. The, using the summary function on these data sets, it is easy to compare   
+the average between years. The boxplot function also allows for a graphical   
+representation of the mileage comparing it from 1999 to 2008. Looking at summary   
+statisitcs, 2008 cars are not more fuel efficient than 1999 cars because the mean and   
+median are within one for each year. In fact, the maximum value actually goes down   
+from 1999 to 2008. Looking at the boxplot for each kind of driving, there is no   
+noticable increase in fuel efficiency from 1999 to 2008, as the boxes are about even.   
+
+
